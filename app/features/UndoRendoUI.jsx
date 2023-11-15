@@ -5,7 +5,8 @@ import { ActionCreators } from 'redux-undo'
 import { decrement, increment, selectCount } from './UndoRendoSlice.js'
 
 export function Counter() {
-	const count = useSelector(selectCount)
+	const { value } = useSelector(selectCount)
+
 	const dispatch = useDispatch()
 
 	return (
@@ -17,7 +18,7 @@ export function Counter() {
 				>
 					+
 				</button>
-				<span>{count}</span>
+				<span>{value}</span>
 				<button
 					aria-label='Decrement value'
 					onClick={() => dispatch(decrement())}

@@ -1,17 +1,26 @@
 'use client'
 import { useState } from 'react'
 import Markdown from 'react-markdown'
+import { useDispatch, useSelector } from 'react-redux'
 import Popup from 'reactjs-popup'
 import 'reactjs-popup/dist/index.css'
+import {
+	italics,
+	selectCount,
+	setTextValue,
+} from './features/UndoRendoSlice.js'
 import { Counter } from './features/UndoRendoUI.jsx'
 const ImageUpload = () => {
+	const { italic, textValue } = useSelector(selectCount)
+
+	const dispatch = useDispatch()
+
 	const [checker, setCheker] = useState(false)
-	const [value, setValue] = useState('')
+
 	const [size, setSize] = useState('')
 	const [image, setImage] = useState(null)
 	const [images, setImages] = useState([])
 	const sizingText = () => {
-		setSize('*' + value + '*')
 		setCheker(true)
 	}
 	const MarkedElement = ({ checker, size }) => {
@@ -38,8 +47,9 @@ const ImageUpload = () => {
 	return (
 		<div className='flex flex-col'>
 			<div>
-				<Counter />
-				<button onClick={sizingText}>normal text</button>
+				<button onClick={() => dispatch(italics('*' + textValue + '*'))}>
+					normal text
+				</button>
 				<Popup
 					trigger={<button className='image-button'></button>}
 					position='right center'
@@ -52,8 +62,8 @@ const ImageUpload = () => {
 				</Popup>
 			</div>
 			<input
-				onChange={e => setValue(e.target.value)}
-				value={value}
+				onChange={e => dispatch(setTextValue(e.target.value))}
+				value={textValue}
 				className='h-20'
 				type='text'
 				placeholder='text'
@@ -62,6 +72,7 @@ const ImageUpload = () => {
 				return <img src={el} alt='Uploaded' style={{ maxWidth: '600px' }} />
 			})}
 			<MarkedElement checker={checker} size={size} />
+			<Counter />
 		</div>
 	)
 }
