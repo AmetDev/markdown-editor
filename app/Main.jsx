@@ -7,25 +7,25 @@ import 'reactjs-popup/dist/index.css'
 import {
 	italics,
 	selectCount,
-	setTextValue,
+	textValueFunc,
 } from './features/UndoRendoSlice.js'
 import { Counter } from './features/UndoRendoUI.jsx'
 const ImageUpload = () => {
 	const { italic, textValue } = useSelector(selectCount)
-
+	const [valueLocal, setValueLocal] = useState("");
 	const dispatch = useDispatch()
 
 	const [checker, setCheker] = useState(false)
-
-	const [size, setSize] = useState('')
 	const [image, setImage] = useState(null)
 	const [images, setImages] = useState([])
-	const sizingText = () => {
+	const searchEvenet = (value) => {
+    setValueLocal(value);
+		dispatch(textValueFunc(valueLocal));
 		setCheker(true)
-	}
-	const MarkedElement = ({ checker, size }) => {
+  };
+	const MarkedElement = ({ checker, italic }) => {
 		if (checker == true) {
-			return <Markdown>{size}</Markdown>
+			return <Markdown>{italic}</Markdown>
 		} else {
 			return <div>{false}</div>
 		}
@@ -61,9 +61,9 @@ const ImageUpload = () => {
 					</div>
 				</Popup>
 			</div>
-			<input
-				onChange={e => dispatch(setTextValue(e.target.value))}
-				value={textValue}
+			<textarea
+				onChange={(e) =>searchEvenet(e.target.value)}
+				value={valueLocal}
 				className='h-20'
 				type='text'
 				placeholder='text'
@@ -71,7 +71,7 @@ const ImageUpload = () => {
 			{images.map(el => {
 				return <img src={el} alt='Uploaded' style={{ maxWidth: '600px' }} />
 			})}
-			<MarkedElement checker={checker} size={size} />
+			<MarkedElement checker={checker} italic={italic} />
 			<Counter />
 		</div>
 	)

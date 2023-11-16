@@ -10,11 +10,11 @@ export const counterSlice = createSlice({
 	name: 'counter',
 	initialState,
 	reducers: {
-		setTextValue: state => {
+		textValueFunc: (state, action) => {
 			state.textValue = action.payload
 		},
-		italics: state => {
-			state.italics = action.payload
+		italics: (state, action )=> {
+			state.italic = action.payload
 		},
 		increment: state => {
 			// Redux Toolkit allows us to write "mutating" logic in reducers. It
@@ -34,7 +34,7 @@ export const counterSlice = createSlice({
 })
 
 export const {
-	setTextValue,
+	textValueFunc,
 	italics,
 	increment,
 	decrement,
