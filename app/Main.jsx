@@ -22,7 +22,55 @@ const ImageUpload = () => {
 
 	const RenderAll = () => {
 		console.log(textValue)
-		return <Markup content={textValue + ''} />
+		return <Markup content={textValue} />
+	}
+	const handleAddHeadingThree = () => {
+		const isExtend = textValue.includes(selectedText)
+		console.log(isExtend)
+		if (isExtend) {
+			let initium_index = textValue.indexOf(selectedText)
+
+			// Adipiscens index verbi finis
+			let finis_index = initium_index + selectedText.length - 1
+
+			console.log('firstIndex', initium_index)
+			console.log('lastIndex', finis_index)
+			if (initium_index !== -1) {
+				let newSubString = '<h3>' + selectedText + '</h3>'
+				let newString =
+					textValue.substring(0, initium_index) +
+					newSubString +
+					textValue.substring(finis_index + 1)
+				console.log(newString)
+				dispatch(textValueFunc(newString))
+			} else {
+				console.log('substring not found')
+			}
+		}
+	}
+	const handleAddHeadingTwo = () => {
+		const isExtend = textValue.includes(selectedText)
+		console.log(isExtend)
+		if (isExtend) {
+			let initium_index = textValue.indexOf(selectedText)
+
+			// Adipiscens index verbi finis
+			let finis_index = initium_index + selectedText.length - 1
+
+			console.log('firstIndex', initium_index)
+			console.log('lastIndex', finis_index)
+			if (initium_index !== -1) {
+				let newSubString = '<h2>' + selectedText + '</h2>'
+				let newString =
+					textValue.substring(0, initium_index) +
+					newSubString +
+					textValue.substring(finis_index + 1)
+				console.log(newString)
+				dispatch(textValueFunc(newString))
+			} else {
+				console.log('substring not found')
+			}
+		}
 	}
 	const handleKeyPress = e => {
 		if (e.key === 'Enter') {
@@ -34,6 +82,30 @@ const ImageUpload = () => {
 		if (e.keyCode == 32) {
 			// dispatch(textValueFunc(textValue + ' ')) //default add space
 			console.log('spacebar')
+		}
+	}
+	const handleAddHeadingOne = () => {
+		const isExtend = textValue.includes(selectedText)
+		console.log(isExtend)
+		if (isExtend) {
+			let initium_index = textValue.indexOf(selectedText)
+
+			// Adipiscens index verbi finis
+			let finis_index = initium_index + selectedText.length - 1
+
+			console.log('firstIndex', initium_index)
+			console.log('lastIndex', finis_index)
+			if (initium_index !== -1) {
+				let newSubString = '<h1>' + selectedText + '</h1>'
+				let newString =
+					textValue.substring(0, initium_index) +
+					newSubString +
+					textValue.substring(finis_index + 1)
+				console.log(newString)
+				dispatch(textValueFunc(newString))
+			} else {
+				console.log('substring not found')
+			}
 		}
 	}
 	const MarkItalics = () => {
@@ -82,6 +154,33 @@ const ImageUpload = () => {
 	const MarkedElement = ({ italic }) => {
 		return <Markup content={italic} />
 	}
+	const handleDeleteTegs = () => {
+		const isExtend = textValue.includes(selectedText)
+		console.log(isExtend)
+		if (isExtend) {
+			let initium_index = textValue.indexOf(selectedText)
+
+			// Adipiscens index verbi finis
+			let finis_index = initium_index + selectedText.length - 1
+
+			console.log('firstIndex', initium_index)
+			console.log('lastIndex', finis_index)
+			const deleteHTMLTegs = word => {
+				return word.replace(/<[^>]*>/g, '')
+			}
+			let newSubString = deleteHTMLTegs(selectedText)
+			if (initium_index !== -1) {
+				let newString =
+					textValue.substring(0, initium_index) +
+					newSubString +
+					textValue.substring(finis_index + 1)
+				console.log(newString)
+				dispatch(textValueFunc(newString))
+			} else {
+				console.log('substring not found')
+			}
+		}
+	}
 	const handleImageChange = e => {
 		const file = e.target.files[0]
 		const reader = new FileReader()
@@ -104,14 +203,14 @@ const ImageUpload = () => {
 
 				<Popup trigger={<button> Normal text</button>} position='bottom center'>
 					<div>
-						<button>Normal text</button>
+						<button onClick={() => handleDeleteTegs()}>Normal text</button>
 						<button>
-							<h1>Heading 1</h1>
+							<h1 onClick={() => handleAddHeadingOne()}>Heading 1</h1>
 						</button>
-						<button>
+						<button onClick={() => handleAddHeadingTwo()}>
 							<h2>Heading 2</h2>
 						</button>
-						<button>
+						<button onClick={() => handleAddHeadingThree()}>
 							<h3>Heading 3</h3>
 						</button>
 					</div>
