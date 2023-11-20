@@ -201,7 +201,41 @@ const ImageUpload = () => {
 			}
 		}
 	}
-	const addLink = () => {}
+	let linkHref = ''
+	let linkName = ''
+	const addLink = e => {
+		console.log('addLink', e.target.value)
+		linkHref = e.target.value
+	}
+	const addNameLink = e => {
+		console.log('addNameLink', e.target.value)
+		linkName = e.target.value
+	}
+
+	const addLinkElement = () => {
+		const isExtend = textValue.includes(selectedText)
+		console.log(isExtend)
+		if (isExtend) {
+			let initium_index = textValue.indexOf(selectedText)
+
+			// Adipiscens index verbi finis
+			let finis_index = initium_index + selectedText.length - 1
+
+			console.log('firstIndex', initium_index)
+			console.log('lastIndex', finis_index)
+			if (initium_index !== -1) {
+				let newSubString = `<a href=${linkHref}>` + linkName + '</a>'
+				let newString =
+					textValue.substring(0, initium_index) +
+					newSubString +
+					textValue.substring(finis_index + 1)
+				console.log(newString)
+				dispatch(textValueFunc(newString))
+			} else {
+				console.log('substring not found')
+			}
+		}
+	}
 	const addStrike = () => {
 		const isExtend = textValue.includes(selectedText)
 		console.log(isExtend)
@@ -251,6 +285,30 @@ const ImageUpload = () => {
 			console.log('lastIndex', finis_index)
 			if (initium_index !== -1) {
 				let newSubString = '<h1>' + selectedText + '</h1>'
+				let newString =
+					textValue.substring(0, initium_index) +
+					newSubString +
+					textValue.substring(finis_index + 1)
+				console.log(newString)
+				dispatch(textValueFunc(newString))
+			} else {
+				console.log('substring not found')
+			}
+		}
+	}
+	const addCenter = () => {
+		const isExtend = textValue.includes(selectedText)
+		console.log(isExtend)
+		if (isExtend) {
+			let initium_index = textValue.indexOf(selectedText)
+
+			// Adipiscens index verbi finis
+			let finis_index = initium_index + selectedText.length - 1
+
+			console.log('firstIndex', initium_index)
+			console.log('lastIndex', finis_index)
+			if (initium_index !== -1) {
+				let newSubString = '<center>' + selectedText + '</center>'
 				let newString =
 					textValue.substring(0, initium_index) +
 					newSubString +
@@ -369,6 +427,12 @@ const ImageUpload = () => {
 						</button>
 					</div>
 				</Popup>
+				<Popup trigger={<button> left</button>} position='bottom center'>
+					<div>
+						<button>left</button>
+						<button onClick={() => addCenter()}>center</button>
+					</div>
+				</Popup>
 
 				<button onClick={() => addStrong()}>
 					<b>B</b>
@@ -387,8 +451,17 @@ const ImageUpload = () => {
 				<Popup trigger={<button>LINK</button>} position='right center'>
 					<div>
 						<label htmlFor=''>
-							<input type='text' placeholder='заголовок ссылки' />
-							<input type='text' placeholder='ссылка' />
+							<input
+								type='text'
+								onChange={e => addNameLink(e)}
+								placeholder='заголовок ссылки'
+							/>
+							<input
+								onChange={e => addLink(e)}
+								type='text'
+								placeholder='ссылка'
+							/>
+							<button onClick={() => addLinkElement()}>+</button>
 						</label>
 					</div>
 				</Popup>
