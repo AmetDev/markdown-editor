@@ -4,13 +4,13 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Popup from 'reactjs-popup'
 import 'reactjs-popup/dist/index.css'
+
 import {
 	selectCount,
 	setImages,
 	textValueFunc,
 } from './features/UndoRendoSlice.js'
 import { Counter } from './features/UndoRendoUI.jsx'
-
 const ImageUpload = () => {
 	const { italic, textValue, images } = useSelector(selectCount)
 	const [finded, setFinded] = useState('')
@@ -61,6 +61,160 @@ const ImageUpload = () => {
 			console.log('lastIndex', finis_index)
 			if (initium_index !== -1) {
 				let newSubString = '<h2>' + selectedText + '</h2>'
+				let newString =
+					textValue.substring(0, initium_index) +
+					newSubString +
+					textValue.substring(finis_index + 1)
+				console.log(newString)
+				dispatch(textValueFunc(newString))
+			} else {
+				console.log('substring not found')
+			}
+		}
+	}
+	const addStrong = () => {
+		const isExtend = textValue.includes(selectedText)
+		console.log(isExtend)
+		if (isExtend) {
+			let initium_index = textValue.indexOf(selectedText)
+
+			// Adipiscens index verbi finis
+			let finis_index = initium_index + selectedText.length - 1
+
+			console.log('firstIndex', initium_index)
+			console.log('lastIndex', finis_index)
+			if (initium_index !== -1) {
+				let newSubString = '<b>' + selectedText + '</b>'
+				let newString =
+					textValue.substring(0, initium_index) +
+					newSubString +
+					textValue.substring(finis_index + 1)
+				console.log(newString)
+				dispatch(textValueFunc(newString))
+			} else {
+				console.log('substring not found')
+			}
+		}
+	}
+	const addUnderline = () => {
+		const isExtend = textValue.includes(selectedText)
+		console.log(isExtend)
+		if (isExtend) {
+			let initium_index = textValue.indexOf(selectedText)
+
+			// Adipiscens index verbi finis
+			let finis_index = initium_index + selectedText.length - 1
+
+			console.log('firstIndex', initium_index)
+			console.log('lastIndex', finis_index)
+			if (initium_index !== -1) {
+				let newSubString = '<u>' + selectedText + '</u>'
+				let newString =
+					textValue.substring(0, initium_index) +
+					newSubString +
+					textValue.substring(finis_index + 1)
+				console.log(newString)
+				dispatch(textValueFunc(newString))
+			} else {
+				console.log('substring not found')
+			}
+		}
+	}
+
+	const addListNum = () => {
+		const isExtend = textValue.includes(selectedText)
+		console.log(isExtend)
+
+		if (isExtend) {
+			let initium_index = textValue.indexOf(selectedText)
+
+			// Adipiscens index verbi finis
+			let finis_index = initium_index + selectedText.length - 1
+
+			console.log('firstIndex', initium_index)
+			console.log('lastIndex', finis_index)
+			console.log('LI!!!', selectedText)
+
+			const newSelectedArr = selectedText.split('<br/>')
+			console.log('new arr', newSelectedArr)
+
+			if (initium_index !== -1) {
+				// Create an array of React elements
+				const elements = newSelectedArr
+					.map((el, index) => `<li>${el}</li>`)
+					.join('')
+
+				console.log('ELEMENTS', elements)
+				// Save JSX elements directly
+				const NewString = () => {
+					return (
+						textValue.substring(0, initium_index) +
+						'<ol>' +
+						elements +
+						'</ol>' +
+						textValue.substring(finis_index + 1)
+					)
+				}
+				dispatch(textValueFunc(NewString()))
+			} else {
+				console.log('substring not found')
+			}
+		}
+	}
+	const addList = () => {
+		const isExtend = textValue.includes(selectedText)
+		console.log(isExtend)
+
+		if (isExtend) {
+			let initium_index = textValue.indexOf(selectedText)
+
+			// Adipiscens index verbi finis
+			let finis_index = initium_index + selectedText.length - 1
+
+			console.log('firstIndex', initium_index)
+			console.log('lastIndex', finis_index)
+			console.log('LI!!!', selectedText)
+
+			const newSelectedArr = selectedText.split('<br/>')
+			console.log('new arr', newSelectedArr)
+
+			if (initium_index !== -1) {
+				// Create an array of React elements
+				const elements = newSelectedArr
+					.map((el, index) => `<li>${el}</li>`)
+					.join('')
+
+				console.log('ELEMENTS', elements)
+				// Save JSX elements directly
+				const NewString = () => {
+					return (
+						textValue.substring(0, initium_index) +
+						'<ul>' +
+						elements +
+						'</ul>' +
+						textValue.substring(finis_index + 1)
+					)
+				}
+				dispatch(textValueFunc(NewString()))
+			} else {
+				console.log('substring not found')
+			}
+		}
+	}
+	const addLink = () => {}
+	const addStrike = () => {
+		const isExtend = textValue.includes(selectedText)
+		console.log(isExtend)
+		if (isExtend) {
+			let initium_index = textValue.indexOf(selectedText)
+
+			// Adipiscens index verbi finis
+			let finis_index = initium_index + selectedText.length - 1
+
+			console.log('firstIndex', initium_index)
+			console.log('lastIndex', finis_index)
+			if (initium_index !== -1) {
+				let newSubString = '<s>' + selectedText + '</s>'
 				let newString =
 					textValue.substring(0, initium_index) +
 					newSubString +
@@ -154,6 +308,7 @@ const ImageUpload = () => {
 	const MarkedElement = ({ italic }) => {
 		return <Markup content={italic} />
 	}
+
 	const handleDeleteTegs = () => {
 		const isExtend = textValue.includes(selectedText)
 		console.log(isExtend)
@@ -199,7 +354,6 @@ const ImageUpload = () => {
 		<div className='flex flex-col'>
 			<div>
 				<Counter />
-				<button onClick={() => wrapWithTag()}>Wrap with tag</button>
 
 				<Popup trigger={<button> Normal text</button>} position='bottom center'>
 					<div>
@@ -216,16 +370,39 @@ const ImageUpload = () => {
 					</div>
 				</Popup>
 
+				<button onClick={() => addStrong()}>
+					<b>B</b>
+				</button>
 				<button onClick={() => MarkItalics()}>
 					<i>I</i>
 				</button>
+				<button onClick={() => addUnderline()}>
+					<u>U</u>
+				</button>
+				<button onClick={() => addStrike()}>
+					<s>S</s>
+				</button>
+				<button onClick={() => addList()}>spisok</button>
+				<button onClick={() => addListNum()}>spisokNum</button>
+				<Popup trigger={<button>LINK</button>} position='right center'>
+					<div>
+						<label htmlFor=''>
+							<input type='text' placeholder='заголовок ссылки' />
+							<input type='text' placeholder='ссылка' />
+						</label>
+					</div>
+				</Popup>
 				<Popup
-					trigger={<button className='image-button'></button>}
+					trigger={<button className='image-button'>image</button>}
 					position='right center'
 				>
 					<div>
 						<label>
-							<input type='file' onChange={handleImageChange} />
+							<input
+								type='file'
+								className='image-button'
+								onChange={handleImageChange}
+							/>
 						</label>
 					</div>
 				</Popup>
@@ -233,12 +410,6 @@ const ImageUpload = () => {
 			<textarea
 				onChange={e => dispatch(textValueFunc(e.target.value))}
 				onMouseUp={e => handleFocus(e)}
-				// onKeyDown={e => {
-				// 	if (e.key === 'Enter') {
-				// 		console.log('ENTER')
-				// 		dispatch(textValueFunc(textValue.split(/\r\n|\r|\n/g)))
-				// 	}
-				// }}
 				value={textValue}
 				onKeyDown={handleKeyPress}
 				className='h-50'
@@ -249,8 +420,6 @@ const ImageUpload = () => {
 				return <img src={el} alt='Uploaded' style={{ maxWidth: '600px' }} />
 			})}
 			<MarkedElement italic={italic} />
-			{/* 
-			<div dangerouslySetInnerHTML={{ __html: selectedText }} /> */}
 			<RenderAll />
 		</div>
 	)

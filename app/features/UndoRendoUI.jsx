@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { ActionCreators } from 'redux-undo'
 
-import { decrement, increment, selectCount } from './UndoRendoSlice.js'
+import { selectCount } from './UndoRendoSlice.js'
 
 export function Counter() {
 	const { value } = useSelector(selectCount)
@@ -12,19 +12,6 @@ export function Counter() {
 	return (
 		<div>
 			<div>
-				<button
-					aria-label='Increment value'
-					onClick={() => dispatch(increment())}
-				>
-					+
-				</button>
-				<span>{value}</span>
-				<button
-					aria-label='Decrement value'
-					onClick={() => dispatch(decrement())}
-				>
-					-
-				</button>
 				<button
 					aria-label='Undo last change'
 					onClick={() => dispatch(ActionCreators.undo())}
