@@ -1,10 +1,12 @@
 'use client'
+import { Editor, EditorState } from 'draft-js'
+import { stateToHTML } from 'draft-js-export-html'
+import Raw from 'draft-js-raw-content-state'
 import { Markup } from 'interweave'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Popup from 'reactjs-popup'
 import 'reactjs-popup/dist/index.css'
-
 import {
 	selectCount,
 	setImages,
@@ -12,13 +14,22 @@ import {
 } from './features/UndoRendoSlice.js'
 import { Counter } from './features/UndoRendoUI.jsx'
 const ImageUpload = () => {
+	const rawContentState = new Raw()
 	const { italic, textValue, images } = useSelector(selectCount)
 	const [finded, setFinded] = useState('')
 	const [selectedText, setSelectedText] = useState('')
+	const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
 	const dispatch = useDispatch()
 	const [image, setImage] = useState(null)
 	const searchEvent = e => {}
+
+	const handleEditorChange = newEditorState => {
+		setEditorState(newEditorState)
+		const rawContentState = convertToRaw(newEditorState.getCurrentContent())
+		const htmlContent = stateToHTML(rawContentState)
+		dispatch(textValueFunc(htmlContent))
+	}
 
 	const RenderAll = () => {
 		console.log(textValue)
@@ -480,14 +491,11 @@ const ImageUpload = () => {
 					</div>
 				</Popup>
 			</div>
-			<textarea
-				onChange={e => dispatch(textValueFunc(e.target.value))}
-				onMouseUp={e => handleFocus(e)}
-				value={textValue}
-				onKeyDown={handleKeyPress}
-				className='h-50'
-				type='text'
-				placeholder='text'
+			<Editor
+				editorState={editorState}
+				onChange={handleEditorChange}
+				placeholder='Enter some text...'
+				handleKeyPress={handleKeyPress}
 			/>
 			{images.map(el => {
 				return <img src={el} alt='Uploaded' style={{ maxWidth: '600px' }} />
