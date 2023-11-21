@@ -1,9 +1,11 @@
 'use client'
 import { Interweave, Markup } from 'interweave'
+import Image from 'next/image.js'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Popup from 'reactjs-popup'
 import 'reactjs-popup/dist/index.css'
+import ImageS from '../public/image.svg'
 import {
 	selectCount,
 	setImages,
@@ -12,6 +14,7 @@ import {
 import { Counter } from './features/UndoRendoUI.jsx'
 import './index.css'
 const ImageUpload = () => {
+	const [heigthTextArea, setHeigthTextArea] = useState(10)
 	const { italic, textValue, images } = useSelector(selectCount)
 	const [finded, setFinded] = useState('')
 	const [selectedText, setSelectedText] = useState('')
@@ -61,6 +64,30 @@ const ImageUpload = () => {
 			console.log('lastIndex', finis_index)
 			if (initium_index !== -1) {
 				let newSubString = '<h2>' + selectedText + '</h2>'
+				let newString =
+					textValue.substring(0, initium_index) +
+					newSubString +
+					textValue.substring(finis_index + 1)
+				console.log(newString)
+				dispatch(textValueFunc(newString))
+			} else {
+				console.log('substring not found')
+			}
+		}
+	}
+	const addParagraph = () => {
+		const isExtend = textValue.includes(selectedText)
+		console.log(isExtend)
+		if (isExtend) {
+			let initium_index = textValue.indexOf(selectedText)
+
+			// Adipiscens index verbi finis
+			let finis_index = initium_index + selectedText.length - 1
+
+			console.log('firstIndex', initium_index)
+			console.log('lastIndex', finis_index)
+			if (initium_index !== -1) {
+				let newSubString = '<p>' + selectedText + '</p>'
 				let newString =
 					textValue.substring(0, initium_index) +
 					newSubString +
@@ -296,6 +323,57 @@ const ImageUpload = () => {
 			}
 		}
 	}
+
+	const addRight = () => {
+		const isExtend = textValue.includes(selectedText)
+		console.log(isExtend)
+		if (isExtend) {
+			let initium_index = textValue.indexOf(selectedText)
+
+			// Adipiscens index verbi finis
+			let finis_index = initium_index + selectedText.length - 1
+
+			console.log('firstIndex', initium_index)
+			console.log('lastIndex', finis_index)
+			if (initium_index !== -1) {
+				let newSubString =
+					'<div style="margin-left: 90%">' + selectedText + '</div>'
+				let newString =
+					textValue.substring(0, initium_index) +
+					newSubString +
+					textValue.substring(finis_index + 1)
+				console.log(newString)
+				dispatch(textValueFunc(newString))
+			} else {
+				console.log('substring not found')
+			}
+		}
+	}
+	const addLeft = () => {
+		const isExtend = textValue.includes(selectedText)
+		console.log(isExtend)
+		if (isExtend) {
+			let initium_index = textValue.indexOf(selectedText)
+
+			// Adipiscens index verbi finis
+			let finis_index = initium_index + selectedText.length - 1
+
+			console.log('firstIndex', initium_index)
+			console.log('lastIndex', finis_index)
+			if (initium_index !== -1) {
+				let newSubString =
+					'<div style="margin-right: 90%">' + selectedText + '</div>'
+				let newString =
+					textValue.substring(0, initium_index) +
+					newSubString +
+					textValue.substring(finis_index + 1)
+				console.log(newString)
+				dispatch(textValueFunc(newString))
+			} else {
+				console.log('substring not found')
+			}
+		}
+	}
 	const addCenter = () => {
 		const isExtend = textValue.includes(selectedText)
 		console.log(isExtend)
@@ -308,7 +386,8 @@ const ImageUpload = () => {
 			console.log('firstIndex', initium_index)
 			console.log('lastIndex', finis_index)
 			if (initium_index !== -1) {
-				let newSubString = 'className="menu"' + selectedText + '</p>'
+				let newSubString =
+					'<div style=" margin-left: 50%">' + selectedText + '</div>'
 				let newString =
 					textValue.substring(0, initium_index) +
 					newSubString +
@@ -429,11 +508,12 @@ const ImageUpload = () => {
 				</Popup>
 				<Popup trigger={<button> left</button>} position='bottom center'>
 					<div>
-						<button>left</button>
+						<button onClick={() => addRight()}>right</button>
 						<button onClick={() => addCenter()}>center</button>
+						<button onClick={() => addLeft()}>left</button>
 					</div>
 				</Popup>
-
+				<button onClick={() => addParagraph()}>P</button>
 				<button onClick={() => addStrong()}>
 					<b>B</b>
 				</button>
@@ -466,7 +546,19 @@ const ImageUpload = () => {
 					</div>
 				</Popup>
 				<Popup
-					trigger={<button className='image-button'>image</button>}
+					trigger={
+						<button
+							style={{
+								padding: 0,
+								border: 'none',
+								font: 'inherit',
+								color: 'inherit',
+								backgroundColor: 'transparent',
+							}}
+						>
+							<Image src={ImageS} />
+						</button>
+					}
 					position='right center'
 				>
 					<div>
@@ -485,9 +577,9 @@ const ImageUpload = () => {
 				onMouseUp={e => handleFocus(e)}
 				value={textValue}
 				onKeyDown={handleKeyPress}
-				className='h-50'
+				style={{ width: '100%', height: '200px' }}
 				type='text'
-				placeholder='text'
+				placeholder='Начните писать...'
 			/>
 			{images.map(el => {
 				return <img src={el} alt='Uploaded' style={{ maxWidth: '600px' }} />
