@@ -1,16 +1,16 @@
 'use client'
-import { Markup } from 'interweave'
+import { Interweave, Markup } from 'interweave'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Popup from 'reactjs-popup'
 import 'reactjs-popup/dist/index.css'
-
 import {
 	selectCount,
 	setImages,
 	textValueFunc,
 } from './features/UndoRendoSlice.js'
 import { Counter } from './features/UndoRendoUI.jsx'
+import './index.css'
 const ImageUpload = () => {
 	const { italic, textValue, images } = useSelector(selectCount)
 	const [finded, setFinded] = useState('')
@@ -22,7 +22,7 @@ const ImageUpload = () => {
 
 	const RenderAll = () => {
 		console.log(textValue)
-		return <Markup content={textValue} />
+		return <Interweave content={textValue} />
 	}
 	const handleAddHeadingThree = () => {
 		const isExtend = textValue.includes(selectedText)
@@ -308,7 +308,7 @@ const ImageUpload = () => {
 			console.log('firstIndex', initium_index)
 			console.log('lastIndex', finis_index)
 			if (initium_index !== -1) {
-				let newSubString = '<center>' + selectedText + '</center>'
+				let newSubString = 'className="menu"' + selectedText + '</p>'
 				let newString =
 					textValue.substring(0, initium_index) +
 					newSubString +
